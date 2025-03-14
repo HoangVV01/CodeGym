@@ -1,10 +1,156 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title>Title</title>
+  <style>
+    .chessboard {
+      width: 500px;
+      height: 500px;
+      border: 15px solid #ffb700;
+      display: grid;
+      grid-template-columns: 30px repeat(8, 1fr);
+      grid-template-rows: 30px repeat(8, 1fr);
+    }
+
+    .row-label {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #ffb700;
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    .column-label {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #ffb700;
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    .square {
+      width: 100%;
+      height: 100%;
+    }
+
+    .white {
+      background-color: white;
+    }
+
+    .black {
+      background-color: black;
+    }
+
+    .empty-corner {
+      background-color: #ffb700;
+    }
+  </style>
 </head>
 <body>
-$END$
+<div class="chessboard">
+  <div class="empty-corner"></div>
+
+  <!-- Column labels (1-8) -->
+  <div class="column-label">1</div>
+  <div class="column-label">2</div>
+  <div class="column-label">3</div>
+  <div class="column-label">4</div>
+  <div class="column-label">5</div>
+  <div class="column-label">6</div>
+  <div class="column-label">7</div>
+  <div class="column-label">8</div>
+
+  <!-- Row A -->
+  <div class="row-label">A</div>
+  <div class="square white"></div>
+  <div class="square black"></div>
+  <div class="square white"></div>
+  <div class="square black"></div>
+  <div class="square white"></div>
+  <div class="square black"></div>
+  <div class="square white"></div>
+  <div class="square black"></div>
+
+  <!-- Row B -->
+  <div class="row-label">B</div>
+  <div class="square black"></div>
+  <div class="square white"></div>
+  <div class="square black"></div>
+  <div class="square white"></div>
+  <div class="square black"></div>
+  <div class="square white"></div>
+  <div class="square black"></div>
+  <div class="square white"></div>
+
+  <!-- Row C -->
+  <div class="row-label">C</div>
+  <div class="square white"></div>
+  <div class="square black"></div>
+  <div class="square white"></div>
+  <div class="square black"></div>
+  <div class="square white"></div>
+  <div class="square black"></div>
+  <div class="square white"></div>
+  <div class="square black"></div>
+
+  <!-- Row D -->
+  <div class="row-label">D</div>
+  <div class="square black"></div>
+  <div class="square white"></div>
+  <div class="square black"></div>
+  <div class="square white"></div>
+  <div class="square black"></div>
+  <div class="square white"></div>
+  <div class="square black"></div>
+  <div class="square white"></div>
+
+  <!-- Row E -->
+  <div class="row-label">E</div>
+  <div class="square white"></div>
+  <div class="square black"></div>
+  <div class="square white"></div>
+  <div class="square black"></div>
+  <div class="square white"></div>
+  <div class="square black"></div>
+  <div class="square white"></div>
+  <div class="square black"></div>
+
+  <!-- Row F -->
+  <div class="row-label">F</div>
+  <div class="square black"></div>
+  <div class="square white"></div>
+  <div class="square black"></div>
+  <div class="square white"></div>
+  <div class="square black"></div>
+  <div class="square white"></div>
+  <div class="square black"></div>
+  <div class="square white"></div>
+
+  <!-- Row G -->
+  <div class="row-label">G</div>
+  <div class="square white"></div>
+  <div class="square black"></div>
+  <div class="square white"></div>
+  <div class="square black"></div>
+  <div class="square white"></div>
+  <div class="square black"></div>
+  <div class="square white"></div>
+  <div class="square black"></div>
+
+  <!-- Row H -->
+  <div class="row-label">H</div>
+  <div class="square black"></div>
+  <div class="square white"></div>
+  <div class="square black"></div>
+  <div class="square white"></div>
+  <div class="square black"></div>
+  <div class="square white"></div>
+  <div class="square black"></div>
+  <div class="square white"></div>
+</div>
+
 </body>
 </html>
