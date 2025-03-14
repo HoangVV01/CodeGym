@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .container{
+            width:500px;
+            height:500px;
+            .title{
+                text-align: center;
+                background: orange;
+            }
+        }
+        .checkbox-container {
+            display: flex;
+            flex-wrap: wrap;
+            max-width: 300px;
+        }
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="title">SỞ THÍCH CỦA BẠN</div>
+    <form action="" method="POST">
+        <label for="username">Họ và tên</label>
+        <input type="text" id="username"><br>
+        <label for="email">Email</label>
+        <input type="text" id="email"><br>
+        <label>Sở thích</label>
+        <div class="checkbox-container">
+            <input type="checkbox" id="interest1" value="sport">
+            <label for="interest1"> Thể thao</label><br>
+            <input type="checkbox" id="interest2" value="music">
+            <label for="interest2"> Âm nhạc</label><br>
+            <input type="checkbox" id="interest3" value="book">
+            <label for="interest3"> Đọc sách</label><br>
+            <input type="checkbox" id="interest4" value="web">
+            <label for="interest4"> Lướt web</label><br>
+            <input type="checkbox" id="interest5" value="gaming">
+            <label for="interest5"> Chơi game</label><br>
+            <input type="checkbox" id="interest6" value="cinema">
+            <label for="interest6"> Điện ảnh</label><br>
+            <input type="checkbox" id="interest7" value="vacation">
+            <label for="interest7"> Du lịch</label><br>
+        </div>
+
+        <button>Gửi thông tin</button>
+        <button>Nhập lại</button>
+    </form>
+</div>
+</body>
+</html>
