@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Calculator</title>
+  <script>
+    function getValues() {
+      let a = parseFloat(document.getElementById("value1").value);
+      let b = parseFloat(document.getElementById("value2").value);
+      return { a, b };
+    }
+
+    function updateResult(value) {
+      document.getElementById("result").innerText = value;
+    }
+
+    function add() {
+      let { a, b } = getValues();
+      updateResult(a + b);
+    }
+
+    function subtract() {
+      let { a, b } = getValues();
+      updateResult(a - b);
+    }
+
+    function multiply() {
+      let { a, b } = getValues();
+      updateResult(a * b);
+    }
+
+    function divide() {
+      let { a, b } = getValues();
+      if (b === 0) {
+        updateResult("Error: Division by zero");
+      } else {
+        updateResult(a / b);
+      }
+    }
+    </script>
+</head>
+<body>
+<h3>Calculator</h3>
+<input type="text" name="value1" id="value1">
+<input type="text" name="value2" id="value2"><br><br>
+
+<button id="add" onclick="add()">Addition (+)</button>
+<button id="subtract" onclick="subtract()">Subtraction (-)</button>
+<button id="multi" onclick="multiply()">Multiplication (x)</button>
+<button id="divide" onclick="divide()">Division (/)</button>
+
+<h3>Result: <span id="result">0</span></h3>
+
+</body>
+</html>
