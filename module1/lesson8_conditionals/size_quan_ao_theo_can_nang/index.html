@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+  <script>
+    let input = prompt("Enter weight");
+    if(isNaN(input)){
+      alert("Must be a number")
+    }
+    let weight = parseInt(input);
+    if( weight < 50){
+      document.write("S");
+    }else if( weight > 50 && weight < 65){
+      document.write("M");
+    }else if( weight > 65 && weight < 80){
+      document.write("L");
+    }else {
+      document.write("XL");
+    }
+  </script>
+</head>
+<body>
+
+</body>
+</html>
