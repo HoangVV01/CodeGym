@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Good, Cheap, Fast</title>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      font-family: Arial, sans-serif;
+      background-color: #e5ebef;
+    }
+    .option {
+      display: flex;
+      align-items: center;
+      margin: 10px;
+      font-size: 24px;
+      font-weight: bold;
+    }
+    .toggle {
+      width: 50px;
+      height: 25px;
+      background-color: gray;
+      border-radius: 25px;
+      position: relative;
+      cursor: pointer;
+      margin-right: 10px;
+      transition: 0.3s;
+    }
+    .toggle::before {
+      content: "";
+      width: 20px;
+      height: 20px;
+      background-color: lightgray;
+      border-radius: 50%;
+      position: absolute;
+      top: 50%;
+      left: 5px;
+      transform: translateY(-50%);
+      transition: 0.3s;
+    }
+    .active {
+      background-color: lightgreen;
+    }
+    .active::before {
+      left: 25px;
+    }
+  </style>
+</head>
+<body>
+<div class="option" onclick="toggleSwitch('good')">
+  <div class="toggle" id="good"></div> GOOD
+</div>
+<div class="option" onclick="toggleSwitch('cheap')">
+  <div class="toggle" id="cheap"></div> CHEAP
+</div>
+<div class="option" onclick="toggleSwitch('fast')">
+  <div class="toggle" id="fast"></div> FAST
+</div>
+
+<script>
+  function toggleSwitch(option) {
+    const selected = document.getElementById(option);
+    selected.classList.toggle("active");
+
+    const good = document.getElementById("good").classList.contains("active");
+    const cheap = document.getElementById("cheap").classList.contains("active");
+    const fast = document.getElementById("fast").classList.contains("active");
+
+    if (good && cheap && fast) {
+      if (option === "good") {
+        document.getElementById("fast").classList.remove("active");
+      } else if (option === "cheap") {
+        document.getElementById("good").classList.remove("active");
+      } else if (option === "fast") {
+        document.getElementById("cheap").classList.remove("active");
+      }
+    }
+  }
+</script>
+</body>
+</html>

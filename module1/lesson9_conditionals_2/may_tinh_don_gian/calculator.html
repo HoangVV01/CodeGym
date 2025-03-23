@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Calculator</title>
+</head>
+<body>
+<input type="text" id="number" readonly><br>
+<table>
+  <tr>
+    <td><button value="1" onclick="inputValue(this.value)">1</button></td>
+    <td><button value="2" onclick="inputValue(this.value)">2</button></td>
+    <td><button value="3" onclick="inputValue(this.value)">3</button></td>
+    <td><button value="+" onclick="inputValue(this.value)">+</button></td>
+  </tr>
+  <tr>
+    <td><button value="4" onclick="inputValue(this.value)">4</button></td>
+    <td><button value="5" onclick="inputValue(this.value)">5</button></td>
+    <td><button value="6" onclick="inputValue(this.value)">6</button></td>
+    <td><button value="-" onclick="inputValue(this.value)">-</button></td>
+  </tr>
+  <tr>
+    <td><button value="7" onclick="inputValue(this.value)">7</button></td>
+    <td><button value="8" onclick="inputValue(this.value)">8</button></td>
+    <td><button value="9" onclick="inputValue(this.value)">9</button></td>
+    <td><button value="*" onclick="inputValue(this.value)">x</button></td>
+  </tr>
+  <tr>
+    <td><button onclick="clearInput()">AC</button></td>
+    <td><button value="0" onclick="inputValue(this.value)">0</button></td>
+    <td><button onclick="calculateResult()">=</button></td>
+    <td><button value="/" onclick="inputValue(this.value)">/</button></td>
+  </tr>
+</table>
+
+<script>
+  let number = document.getElementById("number");
+
+  function clearInput() {
+    number.value = "";
+  }
+
+  function calculateResult() {
+    try {
+      number.value = eval(number.value);
+    } catch (error) {
+      number.value = "Error";
+    }
+  }
+
+  function inputValue(value) {
+    number.value += value;
+  }
+</script>
+</body>
+</html>
