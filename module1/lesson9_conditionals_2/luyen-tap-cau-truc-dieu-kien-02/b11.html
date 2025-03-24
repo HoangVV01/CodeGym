@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+  var thuNhap = parseFloat(prompt("Nhập thu nhập chịu thuế (triệu VNĐ/tháng):"));
+
+  if (isNaN(thuNhap) || thuNhap < 0) {
+    alert("Vui lòng nhập một số hợp lệ.");
+  } else {
+    var tongThue = tinhThueTNCN(thuNhap);
+    alert("Thuế TNCN phải nộp: " + tongThue.toFixed(2) + " triệu VNĐ");
+  }
+  function tinhThueTNCN(thuNhapChiuThue) {
+    var thue = 0;
+
+    if (thuNhapChiuThue > 80) {
+      thue += (thuNhapChiuThue - 80) * 0.35;
+      thuNhapChiuThue = 80;
+    }
+    if (thuNhapChiuThue > 52) {
+      thue += (thuNhapChiuThue - 52) * 0.30;
+      thuNhapChiuThue = 52;
+    }
+    if (thuNhapChiuThue > 32) {
+      thue += (thuNhapChiuThue - 32) * 0.25;
+      thuNhapChiuThue = 32;
+    }
+    if (thuNhapChiuThue > 18) {
+      thue += (thuNhapChiuThue - 18) * 0.20;
+      thuNhapChiuThue = 18;
+    }
+    if (thuNhapChiuThue > 10) {
+      thue += (thuNhapChiuThue - 10) * 0.15;
+      thuNhapChiuThue = 10;
+    }
+    if (thuNhapChiuThue > 5) {
+      thue += (thuNhapChiuThue - 5) * 0.10;
+      thuNhapChiuThue = 5;
+    }
+    if (thuNhapChiuThue > 0) {
+      thue += thuNhapChiuThue * 0.05;
+    }
+
+    return thue;
+  }
+</script>
+</body>
+</html>

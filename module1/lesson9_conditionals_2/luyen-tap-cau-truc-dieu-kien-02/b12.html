@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+  var tienGoc = parseFloat(prompt("Nhập số tiền gửi ban đầu (VNĐ):"));
+  var laiSuat = parseFloat(prompt("Nhập lãi suất hàng tháng (%):")) / 100;
+  var soThang = parseInt(prompt("Nhập số tháng gửi:"));
+
+  if (isNaN(tienGoc) || isNaN(laiSuat) || isNaN(soThang) || tienGoc < 0 || laiSuat < 0 || soThang < 0) {
+    console.log("Vui lòng nhập dữ liệu hợp lệ.");
+  } else {
+    var tongTien = tinhLaiKep(tienGoc, laiSuat, soThang);
+    console.log("Tổng số tiền sau " + soThang + " tháng: " + tongTien.toFixed(2) + " VNĐ");
+  }
+
+  function tinhLaiKep(tienGoc, laiSuatThang, soThang) {
+    var tongTien = tienGoc * Math.pow((1 + laiSuatThang), soThang);
+    return tongTien;
+  }
+
+</script>
+</body>
+</html>
