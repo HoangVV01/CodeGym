@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    let soPhutNoiMang = prompt("Nhập số phút nội mạng")
+    let soPhutNgoaiMang = prompt("Nhập số phút ngoại mạng")
+    let soPhutQuocTe = prompt("Nhập số phút quốc tế")
+
+    function tinhCuocDienThoai(soPhutNoiMang, soPhutNgoaiMang, soPhutQuocTe) {
+        const phiCoDinh = 50000; // Phí cố định hàng tháng (VNĐ)
+        const cuocNoiMang = 790;  // Cước nội mạng (VNĐ/phút)
+        const cuocNgoaiMang = 890; // Cước ngoại mạng (VNĐ/phút)
+        const cuocQuocTe = 3000;  // Cước gọi quốc tế (VNĐ/phút)
+
+        let tongCuoc = phiCoDinh
+            + (soPhutNoiMang * cuocNoiMang)
+            + (soPhutNgoaiMang * cuocNgoaiMang)
+            + (soPhutQuocTe * cuocQuocTe);
+
+        return tongCuoc;
+    }
+    document.write(tinhCuocDienThoai(soPhutNoiMang, soPhutNgoaiMang, soPhutQuocTe));
+</script>
+</body>
+</html>

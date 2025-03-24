@@ -6,6 +6,19 @@
 </head>
 <body>
 <script>
+let test_score = parseFloat(prompt("Điểm bài kiểm tra"))
+let mid_term_score = parseFloat(prompt("Điểm thi giữa kỳ"))
+let final_score = parseFloat(prompt("Điểm thi cuối kỳ"))
+
+let average_score = (test_score + mid_term_score + final_score) / 3
+
+if(average_score <= 10.0 && average_score >= 8.0){
+    alert("Học lực giỏi")
+}else if(average_score <= 7.0 && average_score >= 5.0){
+    alert("Học lực khá")
+}else{
+    alert("Học lực kém")
+}
 
 </script>
 </body>

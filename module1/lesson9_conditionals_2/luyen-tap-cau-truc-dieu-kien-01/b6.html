@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    let doanhSo = prompt("Nhập doanh số")
+
+    function tinhHoaHong(doanhSo) {
+        let hoaHong = 0;
+
+        if (doanhSo <= 10_000_000) {
+            hoaHong = doanhSo * 0.05;
+        } else if (doanhSo <= 20_000_000) {
+            hoaHong = (10_000_000 * 0.05) + ((doanhSo - 10_000_000) * 0.07);
+        } else {
+            hoaHong = (10_000_000 * 0.05) + (10_000_000 * 0.07) + ((doanhSo - 20_000_000) * 0.10);
+        }
+
+        return hoaHong;
+    }
+    document.write(tinhHoaHong(doanhSo));
+</script>
+</body>
+</html>
