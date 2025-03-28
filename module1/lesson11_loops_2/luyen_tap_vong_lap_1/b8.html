@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hãy thử đoán xem!</title>
+</head>
+<body>
+<button id="playButton">Chơi</button>
+
+<script>
+    document.getElementById("playButton").addEventListener("click", function () {
+        let min = parseInt(prompt("Nhập số nhỏ nhất của khoảng đoán:"));
+        let max = parseInt(prompt("Nhập số lớn nhất của khoảng đoán:"));
+
+        if (isNaN(min) || isNaN(max) || min >= max) {
+            alert("Khoảng không hợp lệ! Vui lòng nhập lại.");
+            return;
+        }
+
+        let randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
+        let guess;
+
+        while (true) {
+            guess = parseInt(prompt(`Nhập số bạn đoán (${min} - ${max}):`));
+
+            if (isNaN(guess)) {
+                alert("Vui lòng nhập một số hợp lệ!");
+                continue;
+            }
+
+            if (guess < randomNumber) {
+                alert("Số bạn đoán nhỏ hơn! Hãy thử lại.");
+            } else if (guess > randomNumber) {
+                alert("Số bạn đoán lớn hơn! Hãy thử lại.");
+            } else {
+                alert("Chúc mừng! Bạn đã đoán đúng!");
+                break;
+            }
+        }
+    });
+</script>
+</body>
+</html>
