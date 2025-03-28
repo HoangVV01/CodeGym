@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    function factorial(n) {
+        if (n < 0) return "Không tồn tại giai thừa cho số âm!";
+        let result = 1;
+        for (let i = 2; i <= n; i++) {
+            result *= i;
+        }
+        return result;
+    }
+
+    console.log(factorial(5)); // Kết quả: 120
+
+</script>
+</body>
+</html>

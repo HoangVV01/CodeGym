@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+  function printFibonacci(n) {
+    let a = 0, b = 1;
+    console.log(a);
+    console.log(b);
+
+    for (let i = 2; i < n; i++) {
+      let next = a + b;
+      console.log(next);
+      a = b;
+      b = next;
+    }
+  }
+
+  printFibonacci(10); // In 10 số đầu tiên trong dãy Fibonacci
+
+</script>
+</body>
+</html>

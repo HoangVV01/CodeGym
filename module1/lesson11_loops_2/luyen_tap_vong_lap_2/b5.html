@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+  function tinhLaiKep(tienGoc, soThang, laiSuat) {
+    let tongTien = tienGoc * Math.pow(1 + laiSuat, soThang);
+    return tongTien.toFixed(2); // Làm tròn 2 chữ số thập phân
+  }
+
+  // Test chương trình
+  let tienGoc = parseFloat(prompt("Nhập số tiền gửi ban đầu:"));
+  let soThang = parseInt(prompt("Nhập số tháng gửi:"));
+  let laiSuat = parseFloat(prompt("Nhập lãi suất hàng tháng (%):")) / 100;
+
+  let tongTien = tinhLaiKep(tienGoc, soThang, laiSuat);
+  alert(`Sau ${soThang} tháng, số tiền nhận được là: ${tongTien} VNĐ`);
+
+</script>
+</body>
+</html>

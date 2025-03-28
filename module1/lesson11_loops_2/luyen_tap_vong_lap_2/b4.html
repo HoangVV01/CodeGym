@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    function printRectangle(width, height) {
+        for (let i = 0; i < height; i++) {
+            if (i === 0 || i === height - 1) {
+                console.log("*".repeat(width)); // In hàng trên cùng và dưới cùng
+            } else {
+                console.log("*" + " ".repeat(width - 2) + "*"); // In hàng giữa (có khoảng trống bên trong)
+            }
+        }
+    }
+    printRectangle(10, 5); // In hình chữ nhật rỗng rộng 10, cao 5
+</script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+  function triangleBottomLeft(n) {
+    console.log("Góc vuông dưới bên trái:");
+    for (let i = 1; i <= n; i++) {
+      console.log("*".repeat(i));
+    }
+    console.log("\n");
+  }
+
+  function triangleTopLeft(n) {
+    console.log("Góc vuông trên bên trái:");
+    for (let i = n; i >= 1; i--) {
+      console.log("*".repeat(i));
+    }
+    console.log("\n");
+  }
+
+  function triangleBottomRight(n) {
+    console.log("Góc vuông dưới bên phải:");
+    for (let i = 1; i <= n; i++) {
+      console.log(" ".repeat(n - i) + "*".repeat(i));
+    }
+    console.log("\n");
+  }
+
+  function triangleTopRight(n) {
+    console.log("Góc vuông trên bên phải:");
+    for (let i = n; i >= 1; i--) {
+      console.log(" ".repeat(n - i) + "*".repeat(i));
+    }
+    console.log("\n");
+  }
+
+  function printAllTriangles(n) {
+    triangleBottomLeft(n);
+    triangleTopLeft(n);
+    triangleBottomRight(n);
+    triangleTopRight(n);
+  }
+
+  printAllTriangles(5);
+
+</script>
+</body>
+</html>
