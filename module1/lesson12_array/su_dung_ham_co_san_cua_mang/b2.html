@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+  function insertDash(str) {
+    let result = str[0]; // Bắt đầu với số đầu tiên
+
+    for (let i = 1; i < str.length; i++) {
+      if (str[i - 1] % 2 === 0 && str[i] % 2 === 0) {
+        result += "-"; // Chèn dấu "-" giữa hai số chẵn
+      }
+      result += str[i]; // Thêm số hiện tại vào kết quả
+    }
+
+    return result;
+  }
+  let input = "025468";
+  let result = insertDash(input);
+  document.write(result);
+</script>
+</body>
+</html>

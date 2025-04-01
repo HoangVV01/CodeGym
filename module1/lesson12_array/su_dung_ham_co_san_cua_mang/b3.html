@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+  function caseSwap(str){
+    return str.split(" ")
+            .map(char => char.charCodeAt(0).toUpperCase() ? char.toLowerCase() : char.toUpperCase())
+            .join(" ");
+  }
+  let input = "The Quick Brown Fox";
+  document.write(caseSwap(input));
+</script>
+</body>
+</html>
