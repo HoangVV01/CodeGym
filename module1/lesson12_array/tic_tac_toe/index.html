@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trò chơi Cờ Caro</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 50px;
+    }
+    .board {
+      display: grid;
+      grid-template-columns: repeat(3, 60px);
+      grid-gap: 5px;
+      justify-content: center;
+    }
+    .cell {
+      width: 60px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      font-weight: bold;
+      border: 2px solid black;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+<h2>Trò chơi Cờ Caro</h2>
+<div class="board" id="board"></div>
+<h3 id="result"></h3>
+<button onclick="resetGame()">Chơi lại</button>
+
+<script>
+  let board = [
+    ['', '', ''],
+    ['', '', ''],
+    ['', '', '']
+  ];
+  let currentPlayer = 'X';
+
+  function createBoard() {
+    let boardDiv = document.getElementById("board");
+    boardDiv.innerHTML = "";
+    for (let i = 0; i < 3; i++) {
+      for (let j = 0; j < 3; j++) {
+        let cell = document.createElement("div");
+        cell.classList.add("cell");
+        cell.dataset.row = i;
+        cell.dataset.col = j;
+        cell.innerText = board[i][j] || '.';
+        cell.addEventListener("click", handleMove);
+        boardDiv.appendChild(cell);
+      }
+    }
+  }
+
+  function handleMove(event) {
+    let row = event.target.dataset.row;
+    let col = event.target.dataset.col;
+    if (board[row][col] === '') {
+      board[row][col] = currentPlayer;
+      checkWinner();
+      currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+      createBoard();
+    }
+  }
+
+  function checkWinner() {
+    for (let i = 0; i < 3; i++) {
+      if (board[i][0] !== '' && board[i][0] === board[i][1] && board[i][1] === board[i][2]) {
+        showWinner(board[i][0]);
+        return;
+      }
+      if (board[0][i] !== '' && board[0][i] === board[1][i] && board[1][i] === board[2][i]) {
+        showWinner(board[0][i]);
+        return;
+      }
+    }
+    if (board[0][0] !== '' && board[0][0] === board[1][1] && board[1][1] === board[2][2]) {
+      showWinner(board[0][0]);
+      return;
+    }
+    if (board[0][2] !== '' && board[0][2] === board[1][1] && board[1][1] === board[2][0]) {
+      showWinner(board[0][2]);
+      return;
+    }
+  }
+
+  function showWinner(winner) {
+    document.getElementById("result").innerText = `Người chơi ${winner} thắng!`;
+    document.querySelectorAll(".cell").forEach(cell => cell.removeEventListener("click", handleMove));
+  }
+
+  function resetGame() {
+    board = [['', '', ''], ['', '', ''], ['', '', '']];
+    currentPlayer = 'X';
+    document.getElementById("result").innerText = "";
+    createBoard();
+  }
+
+  createBoard();
+</script>
+</body>
+</html>
