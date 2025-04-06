@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<table id="board" border="1" style="margin-left: 120px"></table>
+<script>
+  let array = new Array(10);
+  let board = document.getElementById("board");
+
+  for (let i = 0; i < array.length; i++) {
+    let tr = document.createElement("tr");
+    board.appendChild(tr);
+
+    for (let j = 0; j < array.length - 5; j++) {
+      let td = document.createElement("td");
+      tr.appendChild(td);
+      td.style.width = "20px";
+      td.style.height = "20px";
+      td.style.backgroundColor = getRandomColor();
+      //(i+j) % 2 === 0 ? td.style.backgroundColor = "yellow" : td.style.backgroundColor = "green";
+    }
+  }
+
+  function getRandomColor(){
+    let r = Math.floor(Math.random() * 255);
+    let g = Math.floor(Math.random() * 255);
+    let b = Math.floor(Math.random() * 255);
+    return "rgb(" + r + "," + g + "," + b + ")";
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<input onchange="countVowels()">
+<div id="result"></div>
+<script>
+    //Dem so nguyen am
+    function countVowels(){
+        let x = input.value;
+        let total = 0;
+        Array.from(x).forEach(element => {
+            if (
+                element.value === "a" ||
+                element.value === "e" ||
+                element.value === "i" ||
+                element.value === "o" ||
+                element.value === "u"
+            ) {
+                total++;
+            }
+        });
+        document.getElementById("result").innerHTML = total;
+    }
+</script>
+</body>
+</html>

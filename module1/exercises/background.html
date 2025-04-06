@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<button onclick="changeBackground()">Click me</button>
+
+<script>
+    function changeBackground(){
+        document.body.style.background = getRandomColor();
+    }
+    function getRandomColor(){
+        let r = Math.floor(Math.random() * 255);
+        let g = Math.floor(Math.random() * 255);
+        let b = Math.floor(Math.random() * 255);
+        return "rgb(" + r + "," + g + "," + b + ")";
+    }
+    function getColor(){
+        let x = document.body;
+        x.style.background = getRandomColor();
+    }
+    setInterval(getColor,1000);
+</script>
+</body>
+</html>
