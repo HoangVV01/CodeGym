@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+  // Khai báo mảng ký tự
+  let arr = ['a', '1', 'b', '3', 'x', '9', '0', '!', '5', 'c'];
+
+  // Biến đếm số ký tự số
+  let count = 0;
+
+  // Duyệt qua mảng
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i] >= '0' && arr[i] <= '9') {
+      count++;
+    }
+  }
+
+  // In kết quả
+  console.log("Số ký tự là chữ số (0-9):", count);
+
+</script>
+</body>
+</html>
