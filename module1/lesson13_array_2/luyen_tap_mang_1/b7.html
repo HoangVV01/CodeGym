@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+  // Khởi tạo mảng 10 phần tử
+  let arr = [3, 7, 12, 5, 9, 1, 8, 4, 6, 10];
+
+  // Giá trị cần tìm và xoá
+  let v = 5;
+
+  // Tìm vị trí đầu tiên của V
+  let index = arr.indexOf(v);
+
+  if (index !== -1) {
+    // Dịch các phần tử bên phải sang trái
+    for (let i = index; i < arr.length - 1; i++) {
+      arr[i] = arr[i + 1];
+    }
+    // Gán 0 cho phần tử cuối
+    arr[arr.length - 1] = 0;
+
+    console.log("V đã được xoá khỏi mảng.");
+    console.log("Mảng sau khi xoá:", arr);
+  } else {
+    console.log("V không thuộc mảng.");
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+  let array = randomArray();
+  averageNumber(array);
+  function randomArray() {
+    var arr = [];
+    for(var i = 0; i < 10; i++) {
+      arr[i] = Math.floor(Math.random() * 100);
+      console.log(arr[i]);
+    }
+    return arr;
+  }
+
+  function averageNumber(array) {
+    let largest = 0;
+    let average = 0;
+    for(var i = 0; i < array.length; i++) {
+      if(array[i] > largest) {
+        largest = array[i];
+      }
+      average += array[i];
+    }
+    average = average / array.length;
+    console.log("Largest number: "+largest);
+    console.log("Average number: "+Math.floor(average));
+  }
+</script>
+</body>
+</html>

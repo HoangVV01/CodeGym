@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    var array = randomArray();
+    console.log("All numbers: " +numberLargerThanTen(array));
+
+    function randomArray() {
+        var arr = [];
+        for(var i = 0; i < 10; i++) {
+            arr[i] = Math.floor(Math.random() * 100);
+            console.log(arr[i]);
+        }
+        return arr;
+    }
+    function numberLargerThanTen(array){
+        let numbers = 0;
+        for(var i = 0; i < array.length; i++){
+            if(array[i] > 10){
+                numbers++;
+            }
+        }
+        return numbers;
+    }
+
+</script>
+</body>
+</html>

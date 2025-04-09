@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+  function countVowels(str) {
+    const vowels = 'aeiouAEIOU';
+    let count = 0;
+
+    for (let char of str) {
+      if (vowels.includes(char)) {
+        count++;
+      }
+    }
+
+    return count;
+  }
+  let input = "Xin chào các bạn!";
+  let result = countVowels(input);
+  console.log(result);
+</script>
+</body>
+</html>

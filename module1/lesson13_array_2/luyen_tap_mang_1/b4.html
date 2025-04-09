@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+  let array = randomArray();
+  console.log(array.reverse());
+
+  function randomArray() {
+    var arr = [];
+    for(var i = 0; i < 10; i++) {
+      arr[i] = Math.floor(Math.random() * 100);
+      console.log(arr[i]);
+    }
+    return arr;
+  }
+</script>
+</body>
+</html>
