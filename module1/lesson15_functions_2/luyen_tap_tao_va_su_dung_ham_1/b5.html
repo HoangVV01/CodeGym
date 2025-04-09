@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    let star_array_1 = ['Polaris', 'Aldebaran', 'Deneb', 'Vega', 'Altair', 'Dubhe', 'Regulus'];
+    let star_array_2 = ['Ursa Minor', 'Taurus', 'Cygnus', 'Lyra', 'Aquila', 'Ursa Major', 'Leo'];
+    let input = prompt("Enter a star:");
+    let found = 0;
+    for (let i = 0; i < star_array_1.length; i++) {
+        if (star_array_1[i] === input) {
+            document.write(star_array_2[i]);
+            found = 1;
+        }
+    }
+    if(!found) {
+        document.write("Can't find star");
+    }
+
+</script>
+</body>
+</html>
