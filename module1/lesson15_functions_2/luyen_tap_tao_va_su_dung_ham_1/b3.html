@@ -6,14 +6,14 @@
 </head>
 <body>
 <script>
-    let a = parseInt(prompt("Enter number a:"));
-    let b = parseInt(prompt("Enter number b:"));
-    document.write(displayResult(a,b));
-    function displayResult(a,b) {
-        if(a > b){
-            alert("a is greater than b")
-        }else if(a <= b){
-            return a + b;
+    let number1 = parseInt(prompt("Enter number 1:"));
+    let number2 = parseInt(prompt("Enter number 2:"));
+    document.write(displayResult(number1,number2));
+    function displayResult(number1,number2) {
+        if(number1 > number2){
+            alert("number1 is greater than number2")
+        }else if(number1 <= number2){
+            return number1 + number2;
         }
     }
 </script>
