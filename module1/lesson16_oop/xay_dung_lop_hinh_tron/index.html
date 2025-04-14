@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    function Person(name, age, weight) {
+        this.name = name;
+        this.age = age;
+        //this.weight = weight;
+
+        this.say = function () {
+            console.log(`Ten cua toi la ${this.name}, toi ${this.age}`);
+        }
+
+        this.move = function () {
+            console.log("Walking")
+        }
+
+    }
+    const person1 = new Person("Jack", 18, 20);
+    const person2 = new Person("Tom", 20, 24);
+    console.log(person1);
+    person1.move();
+    person1.say();
+    person2.move();
+    person2.say();
+
+    const person3 = {
+        name: "Jack",
+        age: 18,
+    }
+
+    console.log(person3);
+
+</script>
+</body>
+</html>
