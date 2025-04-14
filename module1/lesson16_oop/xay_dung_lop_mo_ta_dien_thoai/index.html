@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Phone Simulation</title>
+</head>
+<body>
+<script>
+
+    class Phone {
+        // Constructor uses default values if none are provided
+        // Fixed typo: sentMessage -> sentMessages
+        constructor(status = false, currentMessage = "", inbox = [], sentMessages = [], battery = 100) {
+            this.status = status;           // Is the phone ON (true) or OFF (false)?
+            this.currentMessage = currentMessage; // Message currently being drafted
+            this.inbox = [...inbox];        // Array for received messages (using spread to avoid reference issues if array passed)
+            this.sentMessages = [...sentMessages]; // Array for sent messages (using spread)
+            this.battery = battery;         // Battery percentage
+        }
+
+        // Toggles the phone status ON/OFF
+        toggleStatus() {
+            this.status = !this.status;
+            // Optional: Slightly decrease battery when turning on/off
+            if (this.battery > 0) {
+                this.battery--;
+            }
+            return this.status;
+        }
+
+        // Gets the status as a readable string
+        getStatus() {
+            // Decrease battery slightly just for checking status when ON? (Optional realism)
+            // if (this.status && this.battery > 0) this.battery--;
+            return this.status ? "ON" : "OFF";
+        }
+
+        // Sets the message currently being written
+        setCurrentMessage(message) {
+            if (this.status) {
+                this.currentMessage = message;
+                // Optional: Decrease battery for writing?
+                // if (this.battery > 0) this.battery--;
+            } else {
+                alert("Cannot write message. Phone is OFF.");
+            }
+        }
+
+        // Gets the message currently being written
+        getCurrentMessage() {
+            return this.currentMessage;
+        }
+
+        // --- Removed setInbox as it allows bypassing receive logic ---
+        // setInbox(inbox) {
+        //     this.inbox = inbox;
+        // }
+
+        // Adds a received message to the inbox if the phone is ON
+        receiveMessage(message) {
+            if (this.status && this.battery > 0) {
+                this.inbox.push(message);
+                this.battery--; // Battery drain for receiving
+                console.log("Message received by phone:", message); // Log for debugging
+            } else if (!this.status) {
+                console.log("Receive failed: Phone is OFF."); // Log for debugging
+                // Optionally alert user phone couldn't receive because it's off
+                // alert("A phone tried to send you a message, but your phone was OFF.");
+            } else {
+                console.log("Receive failed: Battery dead."); // Log for debugging
+            }
+        }
+
+        // Sends the current message to another phone (receiver)
+        sendMessage(receiver) {
+            // Check if sender is ON, has battery, and has a message written
+            if (this.status && this.battery > 0 && this.currentMessage !== "") {
+                // Add message to sender's sent items
+                this.sentMessages.push(this.currentMessage);
+                // Tell the receiver phone to receive the message
+                receiver.receiveMessage(this.currentMessage);
+                // Decrease sender's battery
+                this.battery--;
+                // Clear the sender's draft message
+                this.currentMessage = "";
+                alert("Message sent successfully.");
+
+            } else if (!this.status) {
+                alert("Cannot send. Your phone is OFF.");
+            } else if (this.battery <= 0) {
+                alert("Cannot send. Your battery is dead.");
+            } else if (this.currentMessage === "") {
+                alert("Cannot send. Please write a message first.");
+            }
+        }
+
+        // Gets the inbox messages as a string
+        getInbox() {
+            // Optional: Decrease battery for checking inbox?
+            // if (this.status && this.battery > 0) this.battery--;
+            if (!this.status) return "Phone is OFF.";
+            return this.inbox.length > 0 ? this.inbox.join("\n-----------------\n") : "Inbox is empty.";
+        }
+
+        // Gets the sent messages as a string
+        // Fixed typo: sentMessage -> sentMessages
+        getSentMessages() {
+            // Optional: Decrease battery for checking sent messages?
+            // if (this.status && this.battery > 0) this.battery--;
+            if (!this.status) return "Phone is OFF.";
+            return this.sentMessages.length > 0 ? this.sentMessages.join("\n-----------------\n") : "No sent messages.";
+        }
+
+        // Charges the battery to full
+        chargeBattery() {
+            this.battery = 100;
+        }
+
+        // Gets the current battery level
+        getBattery() {
+            return this.battery;
+        }
+    }
+    // Create the phone instances
+    let Nokia = new Phone();
+    let Iphone = new Phone(); // Starts OFF by default
+
+    // --- Updated Global Functions ---
+
+    function toggleNokiaPhone() {
+        let turnedOn = Nokia.toggleStatus(); // Use the new toggle method
+        alert("Nokia has been turned " + (turnedOn ? "ON" : "OFF") + ".\nBattery: " + Nokia.getBattery() + "%");
+    }
+
+    // --- ADDED FUNCTION FOR IPHONE ---
+    function toggleIphonePhone() {
+        let turnedOn = Iphone.toggleStatus(); // Use the toggle method for Iphone
+        alert("iPhone has been turned " + (turnedOn ? "ON" : "OFF") + ".\nBattery: " + Iphone.getBattery() + "%");
+    }
+
+    function checkPhoneStatus() {
+        alert("Nokia: " + Nokia.getStatus() + ", Battery: " + Nokia.getBattery() + "%" +
+            "\niPhone: " + Iphone.getStatus() + ", Battery: " + Iphone.getBattery() + "%");
+    }
+
+    function chargeNokiaBattery() {
+        Nokia.chargeBattery();
+        alert("Nokia is fully charged (100%).");
+    }
+
+    function chargeIphoneBattery() { // Added function to charge iPhone too
+        Iphone.chargeBattery();
+        alert("iPhone is fully charged (100%).");
+    }
+
+    function writeNokiaMessage() {
+        if (!Nokia.status) {
+            alert("Nokia is OFF. Cannot write message.");
+            return; // Exit if phone is off
+        }
+        let message = prompt("Enter message for Nokia to send:");
+        if (message !== null && message !== "") { // Check message isn't empty or cancelled
+            Nokia.setCurrentMessage(message);
+            alert("Message drafted on Nokia.");
+        } else if (message === "") {
+            alert("Message cannot be empty.");
+        } else {
+            alert("Message writing cancelled.");
+        }
+    }
+
+    // Corrected send message function
+    function sendNokiaToIphone() {
+        // Make sure iPhone is ON to receive (optional, handled by receiveMessage check)
+        if (!Iphone.status) {
+            let turnOn = confirm("iPhone is OFF. Turn it ON to receive the message?");
+            if (turnOn) {
+                Iphone.toggleStatus();
+                alert("iPhone turned ON.");
+            } else {
+                alert("Message cannot be sent; receiver phone is OFF.");
+                return; // Stop sending if user chooses not to turn iPhone on
+            }
+        }
+        // Use the class method for sending
+        Nokia.sendMessage(Iphone);
+        // Update status display potentially
+        checkPhoneStatus();
+    }
+
+    // Renamed for clarity
+    function displayIphoneInbox() {
+        alert("--- iPhone Inbox ---\n" + Iphone.getInbox());
+    }
+
+    function displayNokiaInbox() {
+        alert("--- Nokia Inbox ---\n" + Nokia.getInbox());
+    }
+
+    function displayNokiaSentMessages() {
+        // Fixed method name to match class definition
+        alert("--- Nokia Sent Messages ---\n" + Nokia.getSentMessages());
+    }
+
+
+</script>
+<h1>Điện thoại Nokia vs iPhone</h1>
+
+<button onclick="checkPhoneStatus()">1. Kiểm tra trạng thái điện thoại</button>
+<br>
+<button onclick="toggleNokiaPhone()">2a. Bật / Tắt Nokia</button>
+<button onclick="toggleIphonePhone()">2b. Bật / Tắt iPhone</button> <br>
+<button onclick="chargeNokiaBattery()">3a. Sạc pin Nokia</button>
+<button onclick="chargeIphoneBattery()">3b. Sạc pin iPhone</button> <br>
+<button onclick="writeNokiaMessage()">4. Soạn tin nhắn (Nokia)</button>
+<br>
+<button onclick="sendNokiaToIphone()">5. Gửi tin nhắn (Nokia tới iPhone)</button>
+<br>
+<button onclick="displayIphoneInbox()">6. Xem hộp thư đến iPhone</button>
+<br>
+<button onclick="displayNokiaInbox()">7. Xem hộp thư đến Nokia</button>
+<br>
+<button onclick="displayNokiaSentMessages()">8. Xem tin nhắn đã gửi (Nokia)</button>
+<br>
+
+</body>
+</html>
