@@ -6,34 +6,23 @@
 </head>
 <body>
 <script>
-    function Person(name, age, weight) {
-        this.name = name;
-        this.age = age;
-        //this.weight = weight;
+    let Circle = function(radius) {
 
-        this.say = function () {
-            console.log(`Ten cua toi la ${this.name}, toi ${this.age}`);
+        this.radius = radius;
+
+        this.getRadius = function() {
+            return radius;
+        }
+        this.getArea = function() {
+            return Math.PI * radius * radius;
         }
 
-        this.move = function () {
-            console.log("Walking")
-        }
+    };
+    let circle = new Circle(2);
+    let radius = circle.getRadius();
 
-    }
-    const person1 = new Person("Jack", 18, 20);
-    const person2 = new Person("Tom", 20, 24);
-    console.log(person1);
-    person1.move();
-    person1.say();
-    person2.move();
-    person2.say();
-
-    const person3 = {
-        name: "Jack",
-        age: 18,
-    }
-
-    console.log(person3);
+    let area = circle.getArea();
+    alert("radius: " + radius + "; area: " + area);
 
 </script>
 </body>
