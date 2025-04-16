@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<script>
+    let products = [];
+    let productIndex = -1;
+
+    function displayProduct() {
+        document.getElementById('productCount').innerText =
+            products.length + ' products';
+        const tableBody = document.getElementById('productList');
+        tableBody.innerHTML = '';
+        let row = '';
+        for (let i = 0; i < products.length; i++) {
+            row += '<tr>';
+            row += `<td>${products[i]}</td>`;
+            row += `<td><button type="button" onclick="handleEdit(${i})">Edit</button></td>`;
+            row += `<td><button type="button" onclick="handleDelete(${i})">Delete</button></td>`;
+            row += '</tr>';
+        }
+        tableBody.innerHTML = row;
+    }
+
+    function createProduct(e) {
+        e.preventDefault();
+        const productName = document.getElementById('productName').value;
+        if (productIndex !== -1) {
+            products[productIndex] = productName;
+            productIndex = -1; // Reset index after editing
+            document.getElementById('productName').value = ''; // Clear input field after edit
+            document.getElementById('btnAdd').innerText = 'Add';
+        } else {
+            products.push(productName);
+        }
+        displayProduct();
+    }
+
+    function handleDelete(index) {
+        if (confirm(`Bạn có muốn xóa sản phẩm ${products[index]} không?`)) {
+            products.splice(index, 1);
+            displayProduct();
+        }
+    }
+
+    function handleEdit(index) {
+        productIndex = index;
+        const productName = products[index];
+        console.log(productName);
+        document.getElementById('productName').value = productName;
+        document.getElementById('btnAdd').innerText = 'Update';
+    }
+
+    displayProduct();
+</script>
+<form onsubmit="createProduct(event)">
+    <input type="text" name="productName" id="productName" placeholder="Add new product">
+    <button type="submit" id="btnAdd">Add</button>
+</form>
+<h2>Display All Product</h2>
+<div class="heading">
+    <strong>Product Name</strong>
+    <strong id="productCount">SL Products</strong>
+</div>
+<table>
+    <tbody id="productList">
+    <tr>
+        <td><button type="button">Edit</button></td>
+        <td><button type="button">Delete</button></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
