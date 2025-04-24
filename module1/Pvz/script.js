@@ -6,18 +6,31 @@ canvas.height = 600;
 //global var
 const cellSize = 100;
 const cellGap = 3;
-const gameGrid = []
+
+let numberOfResources = 2000;
+const enemyPositions = [];
+let enemyInterval = 600;
+let frame = 0;
+let gameOver = false;
+let score = 0;
+let shooting = false;
+
+const gameGrid = [];
+const defenders = [];
+const enemies = [];
+const projectiles = [];
+
 //mouse object
-const mouse ={
-    x:10,
-    y:10,
+const mouse = {
+    x: 10,
+    y: 10,
     width: 0.1,
     height: 0.1,
 }
 
 let canvasPosition = canvas.getBoundingClientRect();
 canvas.addEventListener('mousemove', (e) => {
-    mouse.x = e.x - canvasPosition.bottom;
+    mouse.x = e.x - canvasPosition.left;
     mouse.y = e.y - canvasPosition.top;
 });
 canvas.addEventListener('mouseleave', (e) => {
@@ -25,56 +38,249 @@ canvas.addEventListener('mouseleave', (e) => {
     mouse.x = undefined;
 })
 //controlBar object
-const controlBar ={
+const controlBar = {
     width: canvas.width,
-    height: canvas.height
+    height: cellSize
 }
+
 //cell blueprint
-class Cell{
-    constructor(x,y){
+class Cell {
+    constructor(x, y) {
         this.x = x;
         this.y = y;
         this.width = cellSize;
         this.height = cellSize;
     }
 
-    draw(){
-        if(collision(this, mouse)){
+    draw() {
+        if (mouse.x && mouse.y && collision(this, mouse)) {
             ctx.strokeStyle = "black";
             ctx.strokeRect(this.x, this.y, this.width, this.height);
         }
     }
 }
 
-function createGrid(){
-    for(let y = cellSize; y < canvas.height; y += cellSize) {
-        for(let x = cellSize; x < canvas.width; x += cellSize) {
+function createGrid() {
+    for (let y = cellSize; y < canvas.height; y += cellSize) {
+        for (let x = cellSize; x < canvas.width; x += cellSize) {
             gameGrid.push(new Cell(x, y, cellSize));
         }
     }
 }
+
 createGrid();
-function handleGameGrid(){
-    for(let i = 0; i < gameGrid.length; i++){
+
+function handleGameGrid() {
+    for (let i = 0; i < gameGrid.length; i++) {
         gameGrid[i].draw();
     }
 }
 
-//recursive animate func
-function animate(){
-    ctx.fillStyle = 'red';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    handleGameGrid();
-    requestAnimationFrame(animate);
-}
-animate();
+//projectile class
+class Projectile {
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        this.width = 10;
+        this.height = 10;
+        this.power = 10;
+        this.speed = 5;
+    }
 
-function collision(first,second){
-    if(!(first.x > second.x + second.width ||
+    update() {
+        this.x += this.speed;
+    }
+
+    draw() {
+        ctx.fillStyle = "black";
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.width, Math.PI * 2);
+        ctx.fill();
+    }
+}
+//handle projectile
+function handleProjectile() {
+    for (let i = 0; i < projectiles.length; i++) {
+        projectiles[i].update();
+        projectiles[i].draw();
+        for (let j = 0; j < enemies.length; j++) {
+            if(enemies[j] && projectiles[i] && collision(projectiles[i], enemies[j])){
+                enemies[j].health -= projectiles[i].power;
+                projectiles.splice(i,1);
+                i--;
+            }
+        }
+        if (projectiles[i] && projectiles[i].x > canvas.width - cellSize) {
+            projectiles[i].splice(i, 1);
+            i--;
+        }
+    }
+}
+
+//defender class
+class Defender {
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        this.width = cellSize;
+        this.height = cellSize;
+        this.shooting = false;
+        this.health = 100;
+        this.projectiles = [];
+        this.timer = 0;
+    }
+
+    draw() {
+        ctx.fillStyle = "brown";
+        ctx.fillRect(this.x, this.y, this.width, this.height);
+        ctx.fillStyle = 'gold';
+        ctx.font = '20px Varela Round';
+        ctx.fillText(Math.floor(this.health), this.x + 15, this.y + 30);
+    }
+
+    update() {
+        if(shooting){
+            this.timer++;
+            if (timer % 100 === 0) {
+                projectiles[i].push(new Projectile(this.x + 70, this.y + 70));
+            }
+        }else{
+            this.timer = 0;
+        }
+
+    }
+}
+
+canvas.addEventListener('click', function () {
+    const gridPositionX = mouse.x - (mouse.x % cellSize);
+    const gridPositionY = mouse.y - (mouse.y % cellSize);
+    //check if user clicks outside of grid
+    if (gridPositionY < cellSize) return;
+    //check if user place multiple in one square
+    for (let i = 0; i < defenders.length; i++) {
+        if (defenders[i].x === gridPositionX && defenders[i].y === gridPositionY) return;
+    }
+    //set defender price
+    let defenderCost = 100;
+    //check if enough resource
+    if (numberOfResources >= defenderCost) {
+        defenders.push(new Defender(gridPositionX, gridPositionY));
+        numberOfResources -= defenderCost;
+    }
+});
+//handle defender
+function handleDefenders() {
+    for (let i = 0; i < defenders.length; i++) {
+        defenders[i].update();
+        defenders[i].draw();
+        if(enemyPositions.indexOf(defenders[i].y) !== -1){
+            defenders[i].shooting = true;
+        }else{
+            defenders[i].shooting = false;
+        }
+        for (let j = 0; j < defenders.length; j++) {
+            if (defenders[i] && collision( defenders[i], enemies[j])) {
+                enemies[j].movement = 0;
+                defenders[i].health -= 0.2;
+            }
+            if (defenders[i].health <= 0) {
+                defenders.splice(i, 1);
+                i--;
+                enemies[j].movement = enemies[j].speed;
+            }
+        }
+    }
+}
+
+//enemy class
+class Enemy {
+    constructor(verticalPosition) {
+        this.x = canvas.width;
+        this.y = verticalPosition;
+        this.width = cellSize;
+        this.height = cellSize;
+        this.speed = Math.random() * 0.2 + 0.4;
+        this.movement = this.speed;
+        this.health = 100;
+        this.maxHealth = this.health;
+    }
+
+    update() {
+        this.x -= this.movement;
+    }
+
+    draw() {
+        ctx.fillStyle = "red";
+        ctx.fillRect(this.x, this.y, this.width, this.height);
+        ctx.fillStyle = 'black';
+        ctx.font = '30px Varela Round';
+        ctx.fillText(Math.floor(this.health), this.x + 15, this.y + 30);
+    }
+}
+
+//handle enemy
+function handleEnemy() {
+    for (let i = 0; i < enemies.length; i++) {
+        enemies[i].update();
+        enemies[i].draw();
+        if (enemies[i].x < 0) {
+            gameOver = true;
+        }
+        if(enemies[i].health <= 0) {
+            let gainedResource = enemies[i].maxHealth / 10;
+            numberOfResources += gainedResource;
+            score += gainedResource;
+            const findThisIndex = enemyPositions.indexOf(enemies[i].y);
+            enemyPositions.splice(findThisIndex, 1);
+            enemies.splice(i, 1);
+            i--;
+        }
+    }
+    if (frame % enemyInterval === 0) {
+        let verticalPosition = Math.floor(Math.random() * 5 + 1) * cellSize;
+        enemies.push(new Enemy(verticalPosition));
+        enemyPositions.push(verticalPosition);
+        if (enemyInterval > 120) enemyInterval -= 50;
+    }
+}
+
+
+//ui
+function handleGameStatus() {
+    ctx.fillStyle = "black";
+    ctx.font = '30px Varela Round';
+    ctx.fillText('Score: ' + score, 20, 35);
+    ctx.fillText('Resources: ' + numberOfResources, 20, 75);
+
+    if (gameOver) {
+        ctx.fillStyle = 'red';
+        ctx.font = '90px Varela Round';
+        ctx.fillText('GAME OVER', 260, 300);
+    }
+}
+
+//collision event
+function collision(first, second) {
+    if (!(first.x > second.x + second.width ||
         first.x + first.width < second.x ||
-        first.y > second.y + second.height||
-        first.y + first.height < second.y))
-    {
+        first.y > second.y + second.height ||
+        first.y + first.height < second.y)) {
         return true;
     }
 }
+
+//recursive animate func
+function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = 'green';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    handleGameGrid();
+    handleDefenders();
+    handleProjectile();
+    handleEnemy();
+    handleGameStatus();
+    frame++;
+    if (!gameOver) requestAnimationFrame(animate);
+}
+
+animate();
