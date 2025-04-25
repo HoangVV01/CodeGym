@@ -5,6 +5,71 @@
     <title>Title</title>
 </head>
 <body>
+<script>
+    class Apple {
+        #weight;
 
+        constructor() {
+            this.#weight = 10; // Mặc định là 10
+        }
+
+        getWeight() {
+            return this.#weight;
+        }
+
+        decrease() {
+            if (this.#weight > 0) {
+                this.#weight -= 1;
+            }
+        }
+
+        isEmpty() {
+            return this.#weight <= 0;
+        }
+    }
+
+    class Human {
+        constructor(name, gender, weight) {
+            this.name = name;
+            this.gender = gender;
+            this.weight = weight;
+        }
+
+        say(words) {
+            console.log(`${this.name} says: "${words}"`);
+        }
+
+        eat(apple) {
+            if (!apple.isEmpty()) {
+                this.weight += 1;
+                apple.decrease();
+                console.log(`${this.name} ate a bite. Weight: ${this.weight}, Apple left: ${apple.getWeight()}`);
+            } else {
+                console.log(`${this.name} wants to eat, but the apple is gone!`);
+            }
+        }
+
+        checkApple(apple) {
+            console.log(`Apple has ${apple.getWeight()} weight left.`);
+        }
+    }
+
+    const apple = new Apple();
+    const adam = new Human("Adam", "Male", 60);
+    const eva = new Human("Eva", "Female", 50);
+
+    console.log("=== Adam & Eva in the Garden of Eden ===");
+
+    while (!apple.isEmpty()) {
+        adam.eat(apple);
+        if (!apple.isEmpty()) {
+            eva.eat(apple);
+        }
+    }
+    console.log("🍏 The apple is gone!");
+
+
+
+</script>
 </body>
 </html>
