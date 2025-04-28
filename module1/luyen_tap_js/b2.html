@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+  let x = parseInt(prompt("Nhập x:"));
+  let y = parseInt(prompt("Nhập y:"));
+  let z = parseInt(prompt("Nhập z:"));
+
+  function checkTriangle(x, y, z) {
+    // Kiểm tra điều kiện tồn tại tam giác
+    if (x + y <= z || x + z <= y || y + z <= x) {
+      console.log("Không phải là cạnh tam giác");
+      return;
+    }
+
+    // Kiểm tra tam giác vuông
+    let a = x * x, b = y * y, c = z * z;
+    if (a + b === c || a + c === b || b + c === a) {
+      console.log("Là 3 cạnh của tam giác vuông");
+    } else {
+      console.log("Chỉ là 3 cạnh của một tam giác");
+    }
+  }
+
+  checkTriangle(x, y, z);
+
+</script>
+</body>
+</html>

@@ -21,19 +21,32 @@ const defenders = [];
 const enemies = [];
 const projectiles = [];
 const resources = [];
+const defenderTypes = [];
 
-// Add this with your other image declarations at the top
+
+
+// Background
 const backgroundImage = new Image();
 backgroundImage.src = './assets/Frontyard.png';
 
-// Add at the top with other global variables
-const defenderTypes = [];
 const defender1 = new Image();
 defender1.src = './assets/Peashooter.png'; // Replace with your actual defender image path
 defenderTypes.push(defender1);
 
+// Audio
+const backgroundMusic = new Audio('./assets/Loonboon.mp3');
+backgroundMusic.loop = true; // Makes the music loop continuously
 
-//collision event
+const enemyHitSound = new Audio('./assets/Splat.mp3');
+
+function startBackgroundMusic() {
+    backgroundMusic.play();
+}
+
+const gameOverSound = new Audio('./assets/lose.mp3');
+let gameOverSoundPlayed = false;
+
+//Collision event
 function collision(first, second) {
     if (!(first.x > second.x + second.width ||
         first.x + first.width < second.x ||
@@ -77,15 +90,15 @@ class Cell {
 
     draw() {
         if (mouse.x && mouse.y && collision(this, mouse)) {
-            ctx.strokeStyle = "black";
+            ctx.strokeStyle = "white";
             ctx.strokeRect(this.x, this.y, this.width, this.height);
         }
     }
 }
-
+//Create grid
 function createGrid() {
     for (let y = cellSize; y < canvas.height; y += cellSize) {
-        for (let x = cellSize; x < canvas.width; x += cellSize) {
+        for (let x = 0; x < canvas.width; x += cellSize) {
             gameGrid.push(new Cell(x, y, cellSize));
         }
     }
@@ -115,12 +128,13 @@ class Projectile {
     }
 
     draw() {
-        ctx.fillStyle = "black";
+        ctx.fillStyle = "#06402B";
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.width, 0, Math.PI * 2);
         ctx.fill();
     }
 }
+
 // Add debugging to handleProjectile
 function handleProjectile() {
     for (let i = 0; i < projectiles.length; i++) {
@@ -131,10 +145,14 @@ function handleProjectile() {
         if (!projectiles[i]) continue;
 
         for (let j = 0; j < enemies.length; j++) {
-            if(enemies[j] && projectiles[i] && collision(projectiles[i], enemies[j])){
+            if (enemies[j] && projectiles[i] && collision(projectiles[i], enemies[j])) {
                 console.log("Hit enemy: damage", projectiles[i].power);
                 enemies[j].health -= projectiles[i].power;
-                projectiles.splice(i,1);
+                // Play the hit sound
+                enemyHitSound.currentTime = 0; // Reset sound to start
+                enemyHitSound.play();
+
+                projectiles.splice(i, 1);
                 i--;
                 break;
             }
@@ -190,12 +208,12 @@ class Defender {
     }
 
     update() {
-        if(this.shooting){
+        if (this.shooting) {
             this.timer++;
             if (this.timer % 100 === 0) {
-                projectiles.push(new Projectile(this.x + (this.width / 2), this.y + (this.height / 2)));
+                projectiles.push(new Projectile(this.x + (this.width / 3), this.y + (this.height / 3)));
             }
-        }else{
+        } else {
             this.timer = 0;
         }
 
@@ -249,6 +267,7 @@ function handleDefenders() {
         }
     }
 }
+
 //enemy types
 const enemyTypes = [];
 const enemy1 = new Image();
@@ -262,7 +281,7 @@ class Enemy {
         this.x = canvas.width;
         this.y = verticalPosition;
         this.width = cellSize - cellGap * 2;
-        this.height = cellSize - cellGap * 2;
+        this.height = (cellSize - cellGap * 2) * 1.5;
         this.speed = Math.random() * 0.2 + 0.4;
         this.movement = this.speed;
         this.health = 100;
@@ -275,6 +294,8 @@ class Enemy {
     }
 
     draw() {
+        const heightDifference = this.height - (cellSize - cellGap * 2);
+        const adjustedY = this.y - heightDifference / 2;
         // Draw the enemy image
         ctx.drawImage(
             this.enemyType,
@@ -283,15 +304,15 @@ class Enemy {
             this.enemyType.width,
             this.enemyType.height,
             this.x,
-            this.y,
+            adjustedY,
             this.width,
             this.height
         );
 
         // Health text on top
-        ctx.fillStyle = 'black';
-        ctx.font = '30px Varela Round';
-        ctx.fillText(Math.floor(this.health), this.x + 15, this.y + 30);
+        // ctx.fillStyle = 'black';
+        // ctx.font = '30px Varela Round';
+        // ctx.fillText(Math.floor(this.health), this.x + 15, this.y + 30);
     }
 }
 
@@ -301,9 +322,19 @@ function handleEnemy() {
         enemies[i].update();
         enemies[i].draw();
         if (enemies[i].x < 0) {
-            gameOver = true;
+            if (!gameOver) {
+                gameOver = true;
+                // Only play the game over sound once
+                if (!gameOverSoundPlayed) {
+                    // Optionally stop the background music
+                    backgroundMusic.pause();
+                    // Play game over sound
+                    gameOverSound.play();
+                    gameOverSoundPlayed = true;
+                }
+            }
         }
-        if(enemies[i].health <= 0) {
+        if (enemies[i].health <= 0) {
             let gainedResource = enemies[i].maxHealth / 10;
             numberOfResources += gainedResource;
             score += gainedResource;
@@ -323,8 +354,9 @@ function handleEnemy() {
 
 //Floating messages
 const floatingMessages = [];
+
 class floatingMessage {
-    constructor(value,x,y,size,color) {
+    constructor(value, x, y, size, color) {
         this.value = value;
         this.x = x;
         this.y = y;
@@ -333,12 +365,14 @@ class floatingMessage {
         this.color = color;
         this.opacity = 1;
     }
+
     update() {
         this.y -= 0.3;
         this.lifeSpan += 1;
-        if(this.opacity > 0.01) this.opacity -= 0.01;
+        if (this.opacity > 0.01) this.opacity -= 0.01;
     }
-    draw(){
+
+    draw() {
         ctx.globalAlpha = this.opacity;
         ctx.fillStyle = this.color;
         ctx.font = this.size + 'px Varela Round'
@@ -346,11 +380,12 @@ class floatingMessage {
         ctx.globalAlpha = 1;
     }
 }
+
 function handleFloatingMessages() {
-    for(let i = 0; i < floatingMessages.length; i++){
+    for (let i = 0; i < floatingMessages.length; i++) {
         floatingMessages[i].update();
         floatingMessages[i].draw();
-        if(floatingMessages[i].lifeSpan >= 50){
+        if (floatingMessages[i].lifeSpan >= 50) {
             floatingMessages.splice(i, 1)
             i--;
         }
@@ -358,10 +393,10 @@ function handleFloatingMessages() {
 }
 
 //resources
-const amounts = [20,30,40];
+const amounts = [20, 30, 40];
 // Add this near the top with other global variables
 const resourceImage = new Image();
-resourceImage.src = './assets/Sun.png'; // Replace with your actual resource image path
+resourceImage.src = './assets/Sun.png';
 
 // Then modify the Resource class:
 class Resource {
@@ -388,26 +423,25 @@ class Resource {
         );
 
         // Draw the amount text
-        ctx.fillStyle = 'black';
-        ctx.font = '20px Varela Round';
-        ctx.fillText(this.amount, this.x + 25, this.y + 25);
+        // ctx.fillStyle = 'black';
+        // ctx.font = '20px Varela Round';
+        // ctx.fillText(this.amount, this.x + 25, this.y + 25);
     }
 }
 
-function handleResources(){
-    if(frame % 500 === 0 && score < winningScore){
+function handleResources() {
+    if (frame % 500 === 0 && score < winningScore) {
         resources.push(new Resource());
     }
-    for(let i = 0; i < resources.length; i++){ // Change from enemies.length to resources.length
+    for (let i = 0; i < resources.length; i++) {
         resources[i].draw();
-        if(resources[i] && mouse.x && mouse.y && collision(resources[i], mouse)){
+        if (resources[i] && mouse.x && mouse.y && collision(resources[i], mouse)) {
             numberOfResources += resources[i].amount;
             resources.splice(i, 1);
             i--;
         }
     }
 }
-
 
 
 //util
@@ -420,13 +454,13 @@ function handleGameStatus() {
     if (gameOver) {
         ctx.fillStyle = 'red';
         ctx.font = '90px Varela Round';
-        ctx.fillText('GAME OVER', 260, 300);
+        ctx.fillText('GAME OVER', 160, 300);
     }
 
-    if(score >= winningScore && enemies.length === 0){
+    if (score >= winningScore && enemies.length === 0) {
         ctx.fillStyle = 'black';
         ctx.font = '60px Varela Round';
-        ctx.fillText('LEVEL COMPLETE', 160, 300 );
+        ctx.fillText('LEVEL COMPLETE', 160, 300);
         ctx.font = '30px Varela Round';
         ctx.fillText('You win with ' + score + ' points', 164, 340);
     }
@@ -447,10 +481,21 @@ canvas.addEventListener('click', function () {
     if (numberOfResources >= defenderCost) {
         defenders.push(new Defender(gridPositionX, gridPositionY));
         numberOfResources -= defenderCost;
-    }else{
-        floatingMessages.push(new floatingMessage('need more resources',mouse.x,mouse.y,15,'blue'));
+    } else {
+        floatingMessages.push(new floatingMessage('need more resources', mouse.x, mouse.y, 15, 'blue'));
     }
 });
+//toggle background music
+document.getElementById('musicToggle').addEventListener('click', function () {
+    if (backgroundMusic.paused) {
+        backgroundMusic.play();
+        this.textContent = 'Pause Music';
+    } else {
+        backgroundMusic.pause();
+        this.textContent = 'Play Music';
+    }
+});
+let musicStarted = false;
 
 //recursive animate func
 function animate() {
@@ -458,9 +503,13 @@ function animate() {
     // ctx.fillStyle = 'green';
     // ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
+    if (!musicStarted) {
+        startBackgroundMusic();
+        musicStarted = true;
+    }
     handleGameGrid();
-    handleDefenders();
     handleProjectile();
+    handleDefenders();
     handleEnemy();
     handleResources();
     handleGameStatus();
@@ -472,7 +521,6 @@ function animate() {
 animate();
 
 
-
-window.addEventListener('resize', function(){
+window.addEventListener('resize', function () {
     canvasPosition = canvas.getBoundingClientRect();
 });

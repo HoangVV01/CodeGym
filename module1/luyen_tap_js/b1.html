@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+  function inputArray(n) {
+    let arr = [];
+    for (let i = 0; i < n; i++) {
+      let x = Number(prompt(`Nhập phần tử thứ ${i + 1}:`));
+      arr.push(x);
+    }
+    return arr;
+  }
+
+  function checkIncremental(arr) {
+    for (let i = 0; i < arr.length - 1; i++) {
+      if (arr[i] > arr[i + 1]) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  let numOfArray = parseInt(prompt("Nhập số lượng phần tử của mảng"));
+   arr = inputArray(numOfArray);
+   document.write(arr);
+  if(checkIncremental(arr)){
+    document.write("OK");
+  }else{
+    document.write("NO");
+  }
+
+</script>
+</body>
+</html>
